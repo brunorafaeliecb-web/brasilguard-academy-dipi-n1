@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DIPI • Informática Básica N1</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+body{margin:0;font-family:system-ui;background:#eef2f7}
+.login-box{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;text-align:center;padding:20px}
+.login-box button{padding:12px 24px;background:#32455c;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer}
+#app{display:none}
+</style>
+</head>
+<body>
+<div id="login" class="login-box">
+  <h1>BrasilGuard Academy · DIPI</h1>
+  <p>Faça login com Google para acessar o Nível 1.<br>Assim sua conta já fica pronta para os próximos níveis.</p>
+  <button id="btnGoogle">Entrar com Google</button>
+  <p id="status" style="color:#607186;font-size:14px"></p>
+</div>
+<div id="app"></div>
+<script>
+const supabaseClient = window.supabase.createClient(
+  "https://lbncfikxhchhatprupmh.supabase.co",
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxibmNmaWt4aGNoaGF0cHJ1cG1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTM0NzA2NzMsImV4cCI6MjEwOTA0NjY3M30.Eua-DrpqJYuGSwVt0GHT4eY1Z1Kt61ugt8tSHAuYqvM"
+);
+
+async function loginGoogle() {
+  document.getElementById("status").textContent = "Redirecionando para o Google...";
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: "https://brasilguard-dipi-n1-demo.vercel.app" }
+  });
+  if (error) document.getElementById("status").textContent = "Erro: " + error.message;
+}
+
+document.getElementById("btnGoogle").addEventListener("click", loginGoogle);
+
+async function showApp() {
+  document.getElementById("login").style.display = "none";
+  const res = await fetch("/n1.html");
+  if (res.ok) {
+    document.getElementById("app").innerHTML = await res.text();
+  } else {
+    document.getElementById("app").innerHTML = "<p>Conteúdo do Nível 1 disponível.</p>";
+  }
+  document.getElementById("app").style.display = "block";
+}
+
+window.addEventListener("load", async () => {
+  const { data } = await supabaseClient.auth.getSession();
+  if (data.session) showApp();
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    if (session) showApp();
+  });
+});
+</script>
+</body>
+</html>
