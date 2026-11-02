@@ -9,7 +9,6 @@
 body{margin:0;font-family:system-ui;background:#eef2f7}
 .login-box{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;text-align:center;padding:20px}
 .login-box button{padding:12px 24px;background:#32455c;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer}
-#app{display:none}
 </style>
 </head>
 <body>
@@ -19,7 +18,6 @@ body{margin:0;font-family:system-ui;background:#eef2f7}
   <button id="btnGoogle">Entrar com Google</button>
   <p id="status" style="color:#607186;font-size:14px"></p>
 </div>
-<div id="app"></div>
 <script>
 const supabaseClient = window.supabase.createClient(
   "https://lbncfikxhchhatprupmh.supabase.co",
@@ -37,22 +35,13 @@ async function loginGoogle() {
 
 document.getElementById("btnGoogle").addEventListener("click", loginGoogle);
 
-async function showApp() {
-  document.getElementById("login").style.display = "none";
-  const res = await fetch("/n1.html");
-  if (res.ok) {
-    document.getElementById("app").innerHTML = await res.text();
-  } else {
-    document.getElementById("app").innerHTML = "<p>Conteúdo do Nível 1 disponível.</p>";
-  }
-  document.getElementById("app").style.display = "block";
-}
-
 window.addEventListener("load", async () => {
   const { data } = await supabaseClient.auth.getSession();
-  if (data.session) showApp();
+  if (data.session) {
+    window.location.href = "/n1.html";
+  }
   supabaseClient.auth.onAuthStateChange((_event, session) => {
-    if (session) showApp();
+    if (session) window.location.href = "/n1.html";
   });
 });
 </script>
