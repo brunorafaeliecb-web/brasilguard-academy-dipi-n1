@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pré-básico Kids • BrasilGuard Academy</title>
+<style>
+body{margin:0;font-family:system-ui;background:#e8f4fc;color:#243345}
+header{background:#32455c;color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}
+header strong{font-size:18px}
+.pill{background:#d2b75c;color:#243345;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:700}
+.container{max-width:900px;margin:20px auto;padding:0 16px}
+.card{background:white;border-radius:16px;padding:24px;margin-bottom:20px;box-shadow:0 4px 16px #213c5818;text-align:center}
+h1{font-size:26px;margin:0 0 8px}
+h2{font-size:20px;margin:0 0 12px}
+p{line-height:1.6;margin:8px 0}
+button{padding:14px 24px;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;margin:6px}
+.primary{background:#32455c;color:white}
+.secondary{background:#ebeff3;color:#32455c}
+.big-btn{width:140px;height:140px;font-size:48px;border-radius:20px;background:#fff;border:3px solid #d2b75c;margin:10px}
+.big-btn:active{transform:scale(0.95)}
+.feedback{font-weight:700;font-size:18px;margin-top:12px;min-height:28px}
+.keyboard{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:16px 0}
+.key{padding:12px 16px;background:#fff;border:2px solid #cbd6e1;border-radius:8px;font-weight:700;cursor:pointer}
+.key:active{background:#d2b75c}
+#target{font-size:22px;background:#f4f7fa;padding:12px;border-radius:10px;margin:12px 0;letter-spacing:2px}
+footer{text-align:center;padding:20px;color:#607186;font-size:13px}
+footer a{color:#32455c;font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<header>
+  <div><strong>BRASILGUARD ACADEMY</strong><br><small>Pré-básico Kids</small></div>
+  <span class="pill">LÚDICO</span>
+</header>
+<div class="container">
+  <div class="card">
+    <h1>Olá! Vamos brincar com o computador?</h1>
+    <p>Clique, digite e descubra.</p>
+  </div>
+
+  <div class="card">
+    <h2>1. Clique no botão</h2>
+    <p>Aperte o botão grande várias vezes.</p>
+    <button class="big-btn" id="clickBtn">🖱️</button>
+    <div class="feedback" id="clickFeedback">Clique 0 vezes</div>
+  </div>
+
+  <div class="card">
+    <h2>2. Teclado mágico</h2>
+    <p>Digite as letras que aparecem.</p>
+    <div id="target">GATO</div>
+    <input id="typeInput" type="text" placeholder="Digite aqui" style="padding:12px;font-size:20px;border:2px solid #cbd6e1;border-radius:10px;width:80%;text-align:center">
+    <div class="keyboard" id="kb"></div>
+    <div class="feedback" id="typeFeedback"></div>
+  </div>
+
+  <div class="card">
+    <h2>3. Arraste a bola</h2>
+    <p>Arraste a bola até a caixa.</p>
+    <div style="display:flex;justify-content:space-around;align-items:center;height:160px;margin:20px 0">
+      <div id="ball" style="width:60px;height:60px;background:#d2b75c;border-radius:50%;cursor:grab;display:flex;align-items:center;justify-content:center;font-size:28px">⚽</div>
+      <div id="box" style="width:100px;height:100px;border:3px dashed #32455c;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px">Caixa</div>
+    </div>
+    <div class="feedback" id="dragFeedback"></div>
+  </div>
+
+  <div class="card">
+    <h2>Pronto!</h2>
+    <p>Você treinou clique, digitação e arrastar.</p>
+    <button class="primary" onclick="location.href='/n1.html'">Ir para o Nível 1</button>
+  </div>
+</div>
+<footer>
+  <a href="https://wa.me/5521990888213?text=Nossa%2C%20vim%20pelo%20seu%20curso%20Kids.%20Estou%20querendo%20saber%20mais%20informa%C3%A7%C3%B5es." target="_blank">BRafaelS</a>
+</footer>
+<script>
+// Click counter
+let clicks = 0;
+document.getElementById("clickBtn").onclick = () => {
+  clicks++;
+  document.getElementById("clickFeedback").textContent = "Clique " + clicks + " vezes";
+  if (clicks >= 5) document.getElementById("clickFeedback").textContent = "Ótimo! Você clicou bastante.";
+};
+
+// Typing
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const kb = document.getElementById("kb");
+letters.forEach(l => {
+  const b = document.createElement("button");
+  b.className = "key";
+  b.textContent = l;
+  b.onclick = () => {
+    const inp = document.getElementById("typeInput");
+    inp.value += l;
+    checkType();
+  };
+  kb.appendChild(b);
+});
+document.getElementById("typeInput").oninput = checkType;
+function checkType() {
+  const target = document.getElementById("target").textContent;
+  const typed = document.getElementById("typeInput").value.toUpperCase();
+  const fb = document.getElementById("typeFeedback");
+  if (typed === target) fb.textContent = "Acertou! 🎉";
+  else if (target.startsWith(typed)) fb.textContent = "Continue...";
+  else fb.textContent = "Tente de novo";
+}
+
+// Drag and drop
+const ball = document.getElementById("ball");
+const box = document.getElementById("box");
+let dragging = false;
+ball.onmousedown = ball.ontouchstart = () => dragging = true;
+document.onmouseup = document.ontouchend = () => {
+  if (!dragging) return;
+  dragging = false;
+  const ballRect = ball.getBoundingClientRect();
+  const boxRect = box.getBoundingClientRect();
+  const overlap = !(ballRect.right < boxRect.left || ballRect.left > boxRect.right || ballRect.bottom < boxRect.top || ballRect.top > boxRect.bottom);
+  if (overlap) {
+    document.getElementById("dragFeedback").textContent = "Conseguiu! A bola entrou na caixa.";
+    ball.style.position = "static";
+    box.appendChild(ball);
+  } else {
+    document.getElementById("dragFeedback").textContent = "Quase! Tente de novo.";
+  }
+};
+document.onmousemove = document.ontouchmove = (e) => {
+  if (!dragging) return;
+  e.preventDefault();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - 30;
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - 30;
+  ball.style.position = "fixed";
+  ball.style.left = x + "px";
+  ball.style.top = y + "px";
+};
+</script>
+</body>
+</html>

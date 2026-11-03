@@ -3,20 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DIPI • Informática Básica N1</title>
+<title>BrasilGuard Academy • DIPI</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 body{margin:0;font-family:system-ui;background:#eef2f7}
 .login-box{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px;text-align:center;padding:20px}
 .login-box button{padding:12px 24px;background:#32455c;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer}
+#choice{display:none;text-align:center;padding:40px 20px}
+#choice button{margin:10px;padding:16px 28px;font-size:18px;border:none;border-radius:12px;cursor:pointer;font-weight:700}
+.kids{background:#d2b75c;color:#243345}
+.n1{background:#32455c;color:white}
 </style>
 </head>
 <body>
 <div id="login" class="login-box">
   <h1>BrasilGuard Academy · DIPI</h1>
-  <p>Faça login com Google para acessar o Nível 1.<br>Assim sua conta já fica pronta para os próximos níveis.</p>
+  <p>Faça login com Google para acessar o conteúdo.</p>
   <button id="btnGoogle">Entrar com Google</button>
   <p id="status" style="color:#607186;font-size:14px"></p>
+</div>
+<div id="choice">
+  <h1>Escolha o seu nível</h1>
+  <p>Pré-básico Kids (lúdico) ou Nível 1</p>
+  <button class="kids" onclick="location.href='/kids.html'">Pré-básico Kids</button>
+  <button class="n1" onclick="location.href='/n1.html'">Nível 1</button>
 </div>
 <script>
 const supabaseClient = window.supabase.createClient(
@@ -35,13 +45,16 @@ async function loginGoogle() {
 
 document.getElementById("btnGoogle").addEventListener("click", loginGoogle);
 
+function showChoice() {
+  document.getElementById("login").style.display = "none";
+  document.getElementById("choice").style.display = "block";
+}
+
 window.addEventListener("load", async () => {
   const { data } = await supabaseClient.auth.getSession();
-  if (data.session) {
-    window.location.href = "/n1.html";
-  }
+  if (data.session) showChoice();
   supabaseClient.auth.onAuthStateChange((_event, session) => {
-    if (session) window.location.href = "/n1.html";
+    if (session) showChoice();
   });
 });
 </script>
