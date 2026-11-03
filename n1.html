@@ -1,6 +1,29 @@
 <!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DIPI • Informática Básica N1</title><style>
 :root{font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:#243345;background:#eef2f7}*{box-sizing:border-box}body{margin:0}header{background:#32455c;color:#fff;padding:20px 26px;display:flex;justify-content:space-between;align-items:center;gap:10px}header strong{font-size:19px}header small{color:#d2b75c}.pill{background:#d2b75c;color:#243345;border-radius:40px;padding:7px 12px;font-size:12px;font-weight:700}.wrap{max-width:1250px;margin:auto;padding:22px;display:grid;grid-template-columns:255px 1fr;gap:20px}nav{background:#fff;border-radius:15px;padding:14px;position:sticky;top:15px;align-self:start;max-height:90vh;overflow:auto;box-shadow:0 3px 18px #213c5820}nav button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:12px 10px;border-radius:9px;color:#3d5164;cursor:pointer;font-size:13px}nav button.selected{background:#32455c;color:white}nav button:hover{outline:1px solid #d2b75c}main{min-width:0}.card{background:white;border-radius:16px;padding:24px;margin-bottom:17px;box-shadow:0 3px 17px #213c5815}h1{font-size:27px;margin:0 0 8px}h2{font-size:20px;margin:0 0 12px}h3{font-size:17px}p{line-height:1.7}small,.muted{color:#607186}.muted{font-size:13px}.tag{display:inline-block;background:#f3eacb;color:#60501f;border-radius:7px;padding:5px 9px;font-size:12px;font-weight:700}.lessons{display:grid;gap:12px}.lesson{border:1px solid #dce5ee;border-radius:13px;padding:19px}.example{padding:12px 15px;border-left:4px solid #d2b75c;background:#fffbeb;border-radius:5px}.task{padding:12px 15px;background:#ebf3fb;border-radius:8px}.options{display:flex;flex-direction:column;gap:10px;margin:10px 0}.options label{background:#f4f7fa;border:1px solid #e1e8f0;border-radius:9px;padding:10px;cursor:pointer}.options input{accent-color:#32455c}button.primary,button.secondary{padding:12px 17px;border-radius:10px;border:0;cursor:pointer;font-weight:700}button.primary{background:#32455c;color:white}button.secondary{background:#ebeff3;color:#32455c}button:disabled{opacity:.5;cursor:not-allowed}.feedback{font-weight:600;padding:12px;margin:10px 0;border-radius:8px;background:#f0f4fa}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.stat{border-radius:12px;background:#f1f5f9;padding:15px}.stat b{display:block;font-size:25px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}.tabs button{border:1px solid #cbd6e1;padding:8px 12px;background:#fff;border-radius:8px;cursor:pointer}.tabs button.active{background:#32455c;color:white}.gridcells{display:grid;grid-template-columns:45px repeat(4,minmax(52px,1fr));max-width:590px}.gridcells div{border:1px solid #cdd8e4;min-height:43px;display:flex;align-items:center;justify-content:center;background:white}.gridcells .head{background:#e7edf4;font-weight:bold}.gridcells button{border:0;background:transparent;width:100%;height:100%;cursor:pointer}.gridcells button.target{background:#f4e4a7}.gridcells button.picked{background:#a7d4ba}.connect{display:grid;grid-template-columns:1fr 1fr;gap:14px}.cable,.port{border:2px solid #d6e1ec;border-radius:10px;padding:13px;min-height:68px;cursor:pointer;background:white}.cable.active{border-color:#b99b3d;background:#fff8dd}.port:focus{outline:3px solid #d2b75c}.banner{background:#fffbeb;color:#776027;border:1px solid #f1de9f;border-radius:10px;padding:12px;margin:12px 0;font-size:13px}footer{text-align:center;padding:20px;color:#6e7884;font-size:12px}@media(max-width:760px){.wrap{display:block;padding:12px}nav{position:static;max-height:none;margin-bottom:13px;display:flex;overflow-x:auto}nav button{flex:0 0 145px}.card{padding:17px}.stats{grid-template-columns:1fr}.connect{grid-template-columns:1fr}header{padding:15px}h1{font-size:23px}}@media print{nav,.tabs,button{display:none!important}.wrap{display:block}.card{box-shadow:none}}
-</style></head><body><header><div><strong>BRASILGUARD ACADEMY · DIPI</strong><br><small>N1 — Informática Básica | 10 módulos | 60h curriculares</small></div><span class="pill">PROTÓTIPO DIDÁTICO</span></header><div class="wrap"><nav id="nav"></nav><main id="app"></main></div>
+</style></head><body><header><div><strong>BRASILGUARD ACADEMY · DIPI</strong><br><small>N1 — Informática Básica | 10 módulos | 60h curriculares</small></div><span class="pill">PROTÓTIPO DIDÁTICO</span></header>
+<div id="bgd-cube" style="width:100%;height:180px;background:#0a0a0a;margin:0;"></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+const el = document.getElementById('bgd-cube');
+if (el) {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, el.clientWidth/el.clientHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setSize(el.clientWidth, el.clientHeight);
+  el.appendChild(renderer.domElement);
+  const mesh = new THREE.Mesh(new THREE.BoxGeometry(1.2,1.2,1.2), new THREE.MeshNormalMaterial());
+  scene.add(mesh);
+  camera.position.z = 2.8;
+  function loop(){ requestAnimationFrame(loop); mesh.rotation.x+=0.008; mesh.rotation.y+=0.01; renderer.render(scene,camera); }
+  loop();
+}
+</script>
+<style>
+.card{transition:transform .2s, box-shadow .2s}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 24px #213c5828}
+nav button{transition:background .15s}
+</style>
+<div class="wrap"><nav id="nav"></nav><main id="app"></main></div>
 <div id="interactive-tools" style="max-width:1250px;margin:20px auto;padding:0 22px;">
   <div class="card">
     <h2>Prática de Digitação</h2>

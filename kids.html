@@ -33,6 +33,24 @@ footer a{color:#32455c;font-weight:700;text-decoration:none}
   <div><strong>BRASILGUARD ACADEMY</strong><br><small>Pré-básico Kids</small></div>
   <span class="pill">LÚDICO</span>
 </header>
+<div id="kids-cube" style="width:100%;height:160px;background:#0a0a0a;"></div>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+const el = document.getElementById('kids-cube');
+if (el) {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, el.clientWidth/el.clientHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+  renderer.setSize(el.clientWidth, el.clientHeight);
+  el.appendChild(renderer.domElement);
+  const mesh = new THREE.Mesh(new THREE.SphereGeometry(0.8,32,32), new THREE.MeshNormalMaterial());
+  scene.add(mesh);
+  camera.position.z = 2.5;
+  function loop(){ requestAnimationFrame(loop); mesh.rotation.y+=0.015; renderer.render(scene,camera); }
+  loop();
+}
+</script>
+
 <div class="container">
   <div class="card">
     <h1>Olá! Vamos brincar com o computador?</h1>
